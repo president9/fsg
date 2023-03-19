@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <iostream>
 #include "helpers.h" // helpers.cpp already linked. 
 
 #define newl "\n"

@@ -1,15 +1,20 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <string>
+
 #include "classes.h"
 #define newl "\n"
 using namespace std;
 
 
 void showInstructions(){
-    cout << "This is a game of JSG. Play properly." << newl;
-}
-
-void winnerMessage(){
-    cout << "player wins" << newl;
+    cout << "Player 1 has 10 castles (A) and 100 soldiers and so does player 2" << newl;
+    cout << "Each player allocates some amount of soldiers in each castle " << newl;
+    cout << "and a players scores (starts at 0) is increased by A[i] - B[i]" << newl;
+    cout << "where A[i] and B[i] denote the number of soldiers in the ith castles" << newl;
+    cout << "of player 1 and player 2 respectively. When calculating final points," << newl;
+    cout << "each players' score is increased by 2*w where \'w\' is the player's " << newl;
+    cout << "longest winstreak. The player with most points wins." << newl;
 }
 
 string nextPlayerPrompt(int i){
@@ -46,20 +51,34 @@ void gameLoop(Player &example){
 }
 
 void checkWinner(vector<int> &p1, vector<int> &p2){
+    // implement winstreak
     int p1Score = 0;
     int p2Score = 0;
+    int p1Winstreak = 0;
+    int p1LongestWinstreak = 0;
+    int p2Winstreak = 0;
+    int p2LongestWinstreak = 0;
     for(int i = 0; i < 10; i++){
         if(p1[i] > p2[i]){
             p1Score += p1[i] - p2[i];
+            p1Winstreak++;
+            p2Winstreak= 0;
         }
         if(p1[i] < p2[i]){
-            p1Score += p2[i] - p1[i];
+            p2Score += p2[i] - p1[i];
+            p2Winstreak++; 
+            p1Winstreak = 0;
         }
+        p1LongestWinstreak = max(p1LongestWinstreak, p1Winstreak);
+        p2LongestWinstreak = max(p2LongestWinstreak, p2Winstreak);
     }
-    if (p1Score > p2Score){
+    cout << "P1 has " << p1Score + 2*p1LongestWinstreak << " points." << newl;
+    cout << "P2 has " << p2Score + 2*p2LongestWinstreak << " points." << newl;
+
+    if (p1Score + 2*p1LongestWinstreak > p2Score + 2*p2LongestWinstreak){
         cout << "P1 WINS" << newl;
     }
-    else if (p1Score < p2Score){
+    else if (p1Score + 2*p1LongestWinstreak < p2Score + 2*p2LongestWinstreak){
         cout << "P2 WINS" << newl;
     }
     else {
